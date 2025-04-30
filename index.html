@@ -1,0 +1,702 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Mobile App
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
+  <style>
+    body { font-family: 'Roboto', sans-serif; }
+    .screen { display: none; } /* Hide screens by default */
+    .active-screen { display: block; } /* Show active screen */
+    .nav-item.active-nav i, .nav-item.active-nav div { color: #a78bfa; } /* Lighter purple for active nav item */
+    .category-item.active-category { background-color: #d8b4fe; /* Lighter purple for active category */ }
+    .course-item { display: block; /* Show courses by default */}
+    .course-item.hidden { display: none; }
+  </style>
+ </head>
+ <body class="bg-gray-100">
+
+  <!-- Login/Sign Up Screen (No longer active by default) -->
+  <div id="screen-login" class="min-h-screen flex flex-col justify-center items-center max-w-md mx-auto bg-white p-8 shadow-lg screen">
+    <h1 class="text-3xl font-bold text-purple-600 mb-8">Bem-vindo!</h1>
+    <div class="w-full space-y-4 mb-6">
+        <input id="login-email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400" placeholder="Email ou Usuário" type="text"/>
+        <input id="login-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400" placeholder="Senha" type="password"/>
+    </div>
+    <button id="login-button" class="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 mb-4 transition duration-200">
+        Entrar
+    </button>
+    <button id="signup-button" class="w-full bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300 mb-4 transition duration-200">
+        Cadastrar Novo Usuário
+    </button>
+    <a id="forgot-password-link" href="#" class="text-sm text-purple-600 hover:underline">Esqueceu a senha?</a>
+  </div>
+
+  <!-- Sign Up Screen -->
+  <div id="screen-signup" class="min-h-screen flex flex-col justify-center items-center max-w-md mx-auto bg-white p-8 shadow-lg screen">
+      <h1 class="text-3xl font-bold text-purple-600 mb-8">Criar Conta</h1>
+      <div class="w-full space-y-4 mb-6">
+          <input id="signup-username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400" placeholder="Nome de Usuário" type="text"/>
+          <input id="signup-email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400" placeholder="Email" type="email"/>
+          <input id="signup-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400" placeholder="Senha" type="password"/>
+          <input id="signup-confirm-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400" placeholder="Confirmar Senha" type="password"/>
+      </div>
+      <button id="create-account-button" class="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 mb-4 transition duration-200">
+          Criar Conta
+      </button>
+      <button id="back-to-login-from-signup" class="w-full bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300 transition duration-200">
+          Voltar para Login
+      </button>
+  </div>
+
+  <!-- Forgot Password Screen -->
+   <div id="screen-forgot-password" class="min-h-screen flex flex-col justify-center items-center max-w-md mx-auto bg-white p-8 shadow-lg screen">
+      <h1 class="text-3xl font-bold text-purple-600 mb-8">Recuperar Senha</h1>
+      <p class="text-gray-600 mb-6 text-center">Digite seu email para enviarmos um link de recuperação.</p>
+      <div class="w-full space-y-4 mb-6">
+          <input id="forgot-email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400" placeholder="Seu Email" type="email"/>
+      </div>
+      <button id="reset-password-button" class="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 mb-4 transition duration-200">
+          Enviar Link
+      </button>
+      <button id="back-to-login-from-forgot" class="w-full bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300 transition duration-200">
+          Voltar para Login
+      </button>
+  </div>
+
+
+  <!-- Main App Container (Visible by default) -->
+  <div id="main-app-container" class="min-h-screen flex flex-col max-w-md mx-auto bg-white shadow-lg">
+   <!-- Header -->
+   <div class="bg-purple-600 text-white p-4 flex items-center">
+    <!-- Replace img with SVG placeholder -->
+    <svg class="w-12 h-12 rounded-full mr-4 bg-gray-300 text-gray-600 p-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+    <div>
+     <div class="text-lg font-bold">
+      Bem vindo
+     </div>
+     <div id="user-name-display" class="text-sm">
+      Convidado
+     </div>
+    </div>
+    <div class="ml-auto">
+     <i class="fas fa-signal">
+     </i>
+    </div>
+   </div>
+
+   <!-- Content Area -->
+   <div class="flex-grow overflow-y-auto">
+
+     <!-- Inicio Screen (Active by default) -->
+     <div id="screen-inicio" class="screen active-screen">
+       <!-- Search Bar -->
+       <div class="bg-purple-600 p-4">
+        <div class="bg-white rounded-full flex items-center px-4 py-2">
+         <input id="search-input" class="bg-transparent flex-grow outline-none text-gray-700" placeholder="Pesquisar cursos..." type="text"/>
+         <i class="fas fa-search text-gray-500">
+         </i>
+        </div>
+       </div>
+
+       <!-- Categories -->
+       <div class="bg-white p-4">
+        <div class="flex justify-between items-center mb-4">
+         <div class="text-lg font-bold text-gray-800">
+          Categorias
+         </div>
+         <div id="show-all-categories" class="text-purple-600 cursor-pointer hover:underline">
+          Mostrar tudo
+         </div>
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+         <!-- Added data-category attribute -->
+         <div class="category-item bg-gray-100 p-4 rounded-lg flex flex-col items-center text-center cursor-pointer hover:bg-gray-200" data-category="fisica">
+          <i class="fas fa-atom text-2xl mb-2 text-purple-600">
+          </i>
+          <div class="text-xs text-gray-700">
+           Física
+          </div>
+         </div>
+         <div class="category-item bg-gray-100 p-4 rounded-lg flex flex-col items-center text-center cursor-pointer hover:bg-gray-200" data-category="portugues">
+          <i class="fas fa-book text-2xl mb-2 text-purple-600">
+          </i>
+          <div class="text-xs text-gray-700">
+           Português
+          </div>
+         </div>
+         <div class="category-item bg-gray-100 p-4 rounded-lg flex flex-col items-center text-center cursor-pointer hover:bg-gray-200" data-category="matematica-financeira">
+          <i class="fas fa-calculator text-2xl mb-2 text-purple-600">
+          </i>
+          <div class="text-xs text-gray-700">
+           Matemática Financeira
+          </div>
+         </div>
+         <div class="category-item bg-gray-100 p-4 rounded-lg flex flex-col items-center text-center cursor-pointer hover:bg-gray-200" data-category="educacao-financeira">
+          <i class="fas fa-university text-2xl mb-2 text-purple-600">
+          </i>
+          <div class="text-xs text-gray-700">
+           Educação Financeira
+          </div>
+         </div>
+         <div class="category-item bg-gray-100 p-4 rounded-lg flex flex-col items-center text-center cursor-pointer hover:bg-gray-200" data-category="geometria">
+          <i class="fas fa-drafting-compass text-2xl mb-2 text-purple-600">
+          </i>
+          <div class="text-xs text-gray-700">
+           Geometria
+          </div>
+         </div>
+         <div class="category-item bg-gray-100 p-4 rounded-lg flex flex-col items-center text-center cursor-pointer hover:bg-gray-200" data-category="calculo">
+          <i class="fas fa-square-root-alt text-2xl mb-2 text-purple-600">
+          </i>
+          <div class="text-xs text-gray-700">
+           Cálculo
+          </div>
+         </div>
+        </div>
+       </div>
+       <!-- Courses -->
+       <div id="courses-list" class="bg-white p-4 mt-4">
+        <div class="text-lg font-bold mb-4 text-gray-800">
+         Cursos
+        </div>
+        <!-- Added course-item class and data-categories attribute -->
+        <div class="course-item bg-gray-100 p-4 rounded-lg mb-4 cursor-pointer hover:bg-gray-200" data-categories="direito">
+         <div class="flex items-center mb-2">
+          <i class="fas fa-balance-scale text-2xl mr-4 text-purple-600">
+          </i>
+          <div class="font-bold text-gray-800">
+           Direito
+          </div>
+         </div>
+         <div class="text-sm text-gray-600">
+          Direito Penal, Direito de Família, Direito Sucessório, Direito Tributário
+         </div>
+        </div>
+        <div class="course-item bg-gray-100 p-4 rounded-lg mb-4 cursor-pointer hover:bg-gray-200" data-categories="administracao economia sociologia filosofia matematica portugues antropologia">
+         <div class="flex items-center mb-2">
+          <i class="fas fa-briefcase text-2xl mr-4 text-purple-600">
+          </i>
+          <div class="font-bold text-gray-800">
+           Administração
+          </div>
+         </div>
+         <div class="text-sm text-gray-600">
+          Economia, Sociologia, Filosofia, Matemática, Antropologia, Português
+         </div>
+        </div>
+         <div class="course-item bg-gray-100 p-4 rounded-lg mb-4 cursor-pointer hover:bg-gray-200" data-categories="fisica">
+         <div class="flex items-center mb-2">
+          <i class="fas fa-atom text-2xl mr-4 text-purple-600">
+          </i>
+          <div class="font-bold text-gray-800">
+           Introdução à Física Quântica
+          </div>
+         </div>
+         <div class="text-sm text-gray-600">
+           Explore os fundamentos da mecânica quântica.
+         </div>
+        </div>
+        <div class="course-item bg-gray-100 p-4 rounded-lg mb-4 cursor-pointer hover:bg-gray-200" data-categories="portugues gramatica">
+         <div class="flex items-center mb-2">
+          <i class="fas fa-book text-2xl mr-4 text-purple-600">
+          </i>
+          <div class="font-bold text-gray-800">
+           Gramática Avançada
+          </div>
+         </div>
+         <div class="text-sm text-gray-600">
+          Aprofunde seus conhecimentos em gramática portuguesa.
+         </div>
+        </div>
+         <div class="course-item bg-gray-100 p-4 rounded-lg mb-4 cursor-pointer hover:bg-gray-200" data-categories="matematica-financeira educacao-financeira">
+         <div class="flex items-center mb-2">
+          <i class="fas fa-calculator text-2xl mr-4 text-purple-600">
+          </i>
+          <div class="font-bold text-gray-800">
+           Planejamento Financeiro Pessoal
+          </div>
+         </div>
+         <div class="text-sm text-gray-600">
+           Aprenda a gerenciar suas finanças e investir.
+         </div>
+        </div>
+         <div class="course-item bg-gray-100 p-4 rounded-lg mb-4 cursor-pointer hover:bg-gray-200" data-categories="geometria calculo">
+         <div class="flex items-center mb-2">
+           <i class="fas fa-drafting-compass text-2xl mr-4 text-purple-600">
+          </i>
+          <div class="font-bold text-gray-800">
+           Geometria Analítica e Vetores
+          </div>
+         </div>
+         <div class="text-sm text-gray-600">
+           Estudo de pontos, retas, planos e vetores no espaço.
+         </div>
+        </div>
+         <div class="course-item bg-gray-100 p-4 rounded-lg mb-4 cursor-pointer hover:bg-gray-200" data-categories="calculo matematica">
+         <div class="flex items-center mb-2">
+           <i class="fas fa-square-root-alt text-2xl mr-4 text-purple-600">
+           </i>
+          <div class="font-bold text-gray-800">
+           Cálculo Diferencial e Integral I
+          </div>
+         </div>
+         <div class="text-sm text-gray-600">
+           Limites, derivadas, integrais e suas aplicações.
+         </div>
+        </div>
+       </div>
+     </div>
+
+     <!-- Historico Screen -->
+     <div id="screen-historico" class="screen p-4">
+        <h2 class="text-xl font-bold mb-4 text-gray-800">Histórico</h2>
+        <p class="text-gray-600">Seu histórico de atividades aparecerá aqui.</p>
+        <!-- Placeholder content -->
+        <div class="mt-6 space-y-4">
+          <div class="bg-gray-100 p-3 rounded-lg">Visualizou: Matemática Financeira</div>
+          <div class="bg-gray-100 p-3 rounded-lg">Completou: Introdução à Física</div>
+          <div class="bg-gray-100 p-3 rounded-lg">Pesquisou por: Cálculo</div>
+        </div>
+     </div>
+
+     <!-- Faculdades Screen -->
+     <div id="screen-faculdades" class="screen p-4">
+        <h2 class="text-xl font-bold mb-4 text-gray-800">Faculdades</h2>
+        <p class="text-gray-600">Informações sobre faculdades e cursos.</p>
+         <!-- Placeholder content -->
+        <div class="mt-6 space-y-4">
+          <div class="bg-gray-100 p-3 rounded-lg flex items-center">
+             <i class="fas fa-university text-purple-600 mr-3"></i>
+             <span>Universidade Exemplo A</span>
+          </div>
+          <div class="bg-gray-100 p-3 rounded-lg flex items-center">
+             <i class="fas fa-university text-purple-600 mr-3"></i>
+             <span>Instituto Federal B</span>
+          </div>
+           <div class="bg-gray-100 p-3 rounded-lg flex items-center">
+             <i class="fas fa-university text-purple-600 mr-3"></i>
+             <span>Faculdade Técnica C</span>
+          </div>
+        </div>
+     </div>
+
+     <!-- Feed Screen -->
+     <div id="screen-feed" class="screen p-4">
+        <h2 class="text-xl font-bold mb-4 text-gray-800">Feed</h2>
+        <!-- Create Post Area -->
+        <div class="bg-gray-100 p-4 rounded-lg mb-6">
+            <textarea id="post-textarea" class="w-full p-2 border border-gray-300 rounded-lg mb-2 focus:outline-none focus:ring-2 focus:ring-purple-400" rows="3" placeholder="No que você está pensando?"></textarea>
+            <button id="post-button" class="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition duration-200">Postar</button>
+        </div>
+
+        <!-- Feed Posts Container -->
+        <div id="feed-posts-container" class="space-y-4">
+            <!-- Placeholder Post 1 -->
+            <div class="post-item bg-white p-4 rounded-lg shadow">
+                <div class="flex items-center mb-2">
+                     <svg class="w-8 h-8 rounded-full mr-3 bg-gray-300 text-gray-600 p-1 post-avatar" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    <span class="font-semibold text-gray-800 post-username">Usuário Exemplo</span>
+                    <span class="text-xs text-gray-500 ml-auto post-timestamp">2h atrás</span>
+                </div>
+                <p class="text-gray-700 mb-3 post-content">Acabei de terminar o módulo de Cálculo I! Alguém tem dicas para Derivadas Parciais? 🤔 #matematica #calculo</p>
+                <div class="flex justify-start space-x-4 text-gray-500 text-sm">
+                    <button class="like-button hover:text-purple-600"><i class="far fa-heart mr-1"></i> Curtir</button> 
+                    <button class="comment-button hover:text-purple-600"><i class="far fa-comment mr-1"></i> Comentar</button>
+                </div>
+            </div>
+            <!-- Placeholder Post 2 -->
+            <div class="post-item bg-white p-4 rounded-lg shadow">
+                <div class="flex items-center mb-2">
+                    <svg class="w-8 h-8 rounded-full mr-3 bg-gray-300 text-gray-600 p-1 post-avatar" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    <span class="font-semibold text-gray-800 post-username">Outro Aluno</span>
+                    <span class="text-xs text-gray-500 ml-auto post-timestamp">5h atrás</span>
+                </div>
+                <p class="text-gray-700 mb-3 post-content">Recomendação de livro para Física Quântica? Aquele do Griffiths é bom?</p>
+                <div class="flex justify-start space-x-4 text-gray-500 text-sm">
+                    <button class="like-button hover:text-purple-600"><i class="far fa-heart mr-1"></i> Curtir</button>
+                    <button class="comment-button hover:text-purple-600"><i class="far fa-comment mr-1"></i> Comentar</button>
+                </div>
+            </div>
+        </div>
+     </div>
+
+     <!-- Perfil Screen -->
+     <div id="screen-perfil" class="screen p-4">
+        <h2 class="text-xl font-bold mb-4 text-gray-800">Perfil</h2>
+        <div class="flex items-center mb-6">
+            <svg class="w-16 h-16 rounded-full mr-4 bg-gray-300 text-gray-600 p-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+            <div>
+                <div id="profile-user-name" class="text-lg font-semibold text-gray-800">Convidado</div>
+                <div class="text-sm text-gray-500">Estudante</div>
+            </div>
+        </div>
+        <div class="space-y-3">
+            <div id="profile-user-email" class="text-gray-700"><i class="fas fa-envelope mr-2 text-purple-600"></i> Faça login para ver</div>
+            <div class="text-gray-700"><i class="fas fa-cog mr-2 text-purple-600"></i> Configurações da Conta</div>
+            <button id="logout-button" class="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 mt-4">
+                Sair
+            </button>
+            <button id="go-to-login-button" class="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 mt-2">
+                Entrar / Cadastrar
+            </button>
+        </div>
+     </div>
+
+    </div>
+
+   <!-- Navigation -->
+   <div class="bg-purple-600 text-white p-4 flex justify-around mt-auto sticky bottom-0">
+    <div id="nav-inicio" class="nav-item flex flex-col items-center cursor-pointer hover:text-purple-300 active-nav" data-screen="inicio">
+     <i class="fas fa-home text-2xl">
+     </i>
+     <div class="text-xs mt-1">
+      Início
+     </div>
+    </div>
+    <div id="nav-historico" class="nav-item flex flex-col items-center cursor-pointer hover:text-purple-300" data-screen="historico">
+     <i class="fas fa-history text-2xl">
+     </i>
+     <div class="text-xs mt-1">
+      Histórico
+     </div>
+    </div>
+    <div id="nav-feed" class="nav-item flex flex-col items-center cursor-pointer hover:text-purple-300" data-screen="feed">
+     <i class="fas fa-stream text-2xl"></i> 
+     <div class="text-xs mt-1">
+      Feed
+     </div>
+    </div>
+    <div id="nav-faculdades" class="nav-item flex flex-col items-center cursor-pointer hover:text-purple-300" data-screen="faculdades">
+     <i class="fas fa-university text-2xl">
+     </i>
+     <div class="text-xs mt-1">
+      Faculdades
+     </div>
+    </div>
+    <div id="nav-perfil" class="nav-item flex flex-col items-center cursor-pointer hover:text-purple-300" data-screen="perfil">
+     <i class="fas fa-user text-2xl">
+     </i>
+     <div class="text-xs mt-1">
+      Perfil
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <script>
+    // Get references to all screen containers
+    const loginScreen = document.getElementById('screen-login');
+    const signupScreen = document.getElementById('screen-signup');
+    const forgotPasswordScreen = document.getElementById('screen-forgot-password');
+    const mainAppContainer = document.getElementById('main-app-container');
+    const feedScreen = document.getElementById('screen-feed');
+    const allScreens = [loginScreen, signupScreen, forgotPasswordScreen, mainAppContainer]; 
+
+    // Login Screen Elements
+    const loginEmailInput = document.getElementById('login-email');
+    const loginPasswordInput = document.getElementById('login-password');
+    const loginButton = document.getElementById('login-button');
+    const signupButton = document.getElementById('signup-button'); 
+    const forgotPasswordLink = document.getElementById('forgot-password-link');
+
+    // Signup Screen Elements
+    const signupUsernameInput = document.getElementById('signup-username');
+    const signupEmailInput = document.getElementById('signup-email');
+    const signupPasswordInput = document.getElementById('signup-password');
+    const signupConfirmPasswordInput = document.getElementById('signup-confirm-password');
+    const createAccountButton = document.getElementById('create-account-button');
+    const backToLoginFromSignup = document.getElementById('back-to-login-from-signup');
+
+    // Forgot Password Screen Elements
+    const forgotEmailInput = document.getElementById('forgot-email');
+    const resetPasswordButton = document.getElementById('reset-password-button');
+    const backToLoginFromForgot = document.getElementById('back-to-login-from-forgot');
+
+    // Main App Elements
+    const logoutButton = document.getElementById('logout-button');
+    const userNameDisplay = document.getElementById('user-name-display');
+    const profileUserName = document.getElementById('profile-user-name');
+    const profileUserEmail = document.getElementById('profile-user-email');
+    const goToLoginButton = document.getElementById('go-to-login-button');
+    const navItems = document.querySelectorAll('.nav-item');
+    const mainAppScreens = document.querySelectorAll('#main-app-container .screen'); 
+    const categoryItems = document.querySelectorAll('.category-item');
+    const courseItems = document.querySelectorAll('#courses-list .course-item');
+    const showAllCategoriesButton = document.getElementById('show-all-categories');
+    const searchInput = document.getElementById('search-input');
+
+    const postTextarea = document.getElementById('post-textarea');
+    const postButton = document.getElementById('post-button');
+    const feedPostsContainer = document.getElementById('feed-posts-container');
+    let loggedInUsername = "Convidado"; // Store logged-in username
+
+    // --- Screen Management ---
+
+    function showScreen(screenToShow) {
+        allScreens.forEach(screen => {
+            if (screen === screenToShow) {
+                screen.style.display = screen === mainAppContainer ? 'flex' : 'block'; 
+                screen.classList.add('active-screen'); 
+            } else {
+                screen.style.display = 'none';
+                screen.classList.remove('active-screen');
+            }
+        });
+
+        if (screenToShow === loginScreen) document.title = "Mobile App - Login";
+        else if (screenToShow === signupScreen) document.title = "Mobile App - Cadastrar";
+        else if (screenToShow === forgotPasswordScreen) document.title = "Mobile App - Recuperar Senha";
+        else if (screenToShow === mainAppContainer) document.title = "Mobile App";
+    }
+
+
+    // --- Login/Authentication Logic ---
+
+    function showLoginScreen() {
+        showScreen(loginScreen);
+    }
+
+    function showSignUpScreen() {
+        showScreen(signupScreen);
+    }
+
+    function showForgotPasswordScreen() {
+        showScreen(forgotPasswordScreen);
+    }
+
+    function showMainApp(username = null) {
+        showScreen(mainAppContainer);
+
+        if (username) {
+            loggedInUsername = username; // Update global username
+            userNameDisplay.textContent = username;
+            profileUserName.textContent = username;
+            // Use a placeholder or logic to get actual email if available
+            const email = signupEmailInput.value || loginEmailInput.value || `${username.toLowerCase().replace(/\s+/g, '.')}@exemplo.com`;
+            profileUserEmail.innerHTML = `<i class="fas fa-envelope mr-2 text-purple-600"></i> ${email}`;
+            logoutButton.style.display = 'block';
+            goToLoginButton.style.display = 'none';
+        } else {
+             loggedInUsername = "Convidado"; // Reset global username
+             userNameDisplay.textContent = "Convidado";
+            profileUserName.textContent = "Convidado";
+            profileUserEmail.innerHTML = `<i class="fas fa-envelope mr-2 text-purple-600"></i> Faça login para ver`;
+            logoutButton.style.display = 'none';
+            goToLoginButton.style.display = 'block';
+            // ... (reset input fields)
+        }
+
+        // Reset to 'Inicio' tab only if logging in or if no screen is active
+        // Prevent resetting tab when navigating within the app while logged in
+        if (!mainAppContainer.querySelector('.screen.active-screen') || username) {
+            setActiveScreen('inicio');
+            setActiveNav('inicio');
+        }
+    }
+
+    loginButton.addEventListener('click', () => {
+        // ... (existing login logic)
+        const emailOrUser = loginEmailInput.value;
+        const password = loginPasswordInput.value;
+        // Determine username - prioritize signup input if it has value, else login input, else default
+        let username = signupUsernameInput.value || (emailOrUser && !emailOrUser.includes('@') ? emailOrUser : "Dani Martinez");
+
+        if (emailOrUser && password) {
+             console.log(`Attempting login for: ${emailOrUser}`);
+             showMainApp(username);
+        } else {
+            alert("Por favor, preencha o email/usuário e a senha.");
+        }
+    });
+
+    // ... (other auth listeners)
+
+    logoutButton.addEventListener('click', () => {
+        console.log("Logging out");
+        showMainApp(); // Reset to guest state which shows login screen
+        showLoginScreen();
+    });
+
+
+    // ... (existing navigation logic)
+
+    // --- Feed Functionality ---
+
+    // Function to create a new post element
+    function createPostElement(username, content) {
+        const postDiv = document.createElement('div');
+        postDiv.className = 'post-item bg-white p-4 rounded-lg shadow';
+        postDiv.innerHTML = `
+            <div class="flex items-center mb-2">
+                 <svg class="w-8 h-8 rounded-full mr-3 bg-gray-300 text-gray-600 p-1 post-avatar" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                 <span class="font-semibold text-gray-800 post-username">${username}</span>
+                 <span class="text-xs text-gray-500 ml-auto post-timestamp">Agora</span>
+             </div>
+             <p class="text-gray-700 mb-3 post-content">${content}</p>
+             <div class="flex justify-start space-x-4 text-gray-500 text-sm">
+                 <button class="like-button hover:text-purple-600"><i class="far fa-heart mr-1"></i> Curtir</button>
+                 <button class="comment-button hover:text-purple-600"><i class="far fa-comment mr-1"></i> Comentar</button>
+             </div>
+        `;
+        return postDiv;
+    }
+
+    // Event listener for the post button
+    postButton.addEventListener('click', () => {
+        const postContent = postTextarea.value.trim();
+        if (postContent) {
+            const newPost = createPostElement(loggedInUsername, postContent);
+            feedPostsContainer.prepend(newPost); // Add to the top of the feed
+            postTextarea.value = ''; // Clear the textarea
+            console.log(`New post added by ${loggedInUsername}: "${postContent}"`);
+        } else {
+            alert('Por favor, escreva algo para postar.');
+        }
+    });
+
+    // Event delegation for like and comment buttons
+    feedPostsContainer.addEventListener('click', (event) => {
+        const target = event.target;
+        const likeButton = target.closest('.like-button');
+        const commentButton = target.closest('.comment-button');
+
+        if (likeButton) {
+            const icon = likeButton.querySelector('i');
+            const isLiked = icon.classList.contains('fas'); // Check if already solid (liked)
+
+            if (isLiked) {
+                icon.classList.remove('fas', 'text-purple-600');
+                icon.classList.add('far'); // Back to outline
+                likeButton.childNodes[1].textContent = ' Curtir'; // Reset text
+                console.log("Post unliked");
+            } else {
+                icon.classList.remove('far');
+                icon.classList.add('fas', 'text-purple-600'); // Solid icon and purple color
+                likeButton.childNodes[1].textContent = ' Curtido'; // Change text
+                console.log("Post liked");
+            }
+        } else if (commentButton) {
+            // In a real app, this would open a comment input/modal
+            console.log("Comment button clicked - Placeholder action");
+            alert('Funcionalidade de comentário ainda não implementada.');
+        }
+    });
+
+
+    // ... (existing category/course filtering)
+
+
+    // Initial setup
+    showMainApp(); // Start in guest mode / potentially logged-out state
+
+    // Check if user might be 'logged in' from previous state (simple check)
+    if (userNameDisplay.textContent !== "Convidado") {
+        showMainApp(userNameDisplay.textContent);
+    } else {
+        showLoginScreen(); // Explicitly show login if not 'logged in'
+    }
+
+    // Ensure 'Inicio' is active if main app is shown initially
+    if(mainAppContainer.style.display !== 'none') {
+       setActiveNav('inicio');
+       setActiveScreen('inicio');
+    } else {
+        // Hide all main app screens if login is shown
+        mainAppScreens.forEach(screen => screen.classList.remove('active-screen'));
+    }
+
+    function setActiveScreen(screenName) {
+         const targetScreenId = `screen-${screenName}`;
+         mainAppScreens.forEach(screen => { 
+            if (screen.id === targetScreenId) {
+                 screen.classList.add('active-screen');
+             } else {
+                 screen.classList.remove('active-screen');
+             }
+        });
+     }
+
+      function setActiveNav(screenName) {
+          navItems.forEach(nav => {
+             if (nav.dataset.screen === screenName) {
+                 nav.classList.add('active-nav');
+             } else {
+                 nav.classList.remove('active-nav');
+             }
+         });
+      }
+
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const targetScreen = item.dataset.screen;
+
+        setActiveNav(targetScreen);
+        setActiveScreen(targetScreen);
+
+        if (targetScreen === 'inicio') {
+            resetCategoryFilter();
+            searchInput.value = '';
+            filterCourses(null, ''); 
+        }
+      });
+    });
+
+    function filterCourses(selectedCategory = null, searchTerm = '') {
+        const searchLower = searchTerm.toLowerCase().trim();
+
+        courseItems.forEach(course => {
+            const categories = course.dataset.categories ? course.dataset.categories.split(' ') : [];
+            const courseText = course.textContent.toLowerCase();
+
+            const categoryMatch = !selectedCategory || categories.includes(selectedCategory);
+            const searchMatch = !searchLower || courseText.includes(searchLower);
+
+            if (categoryMatch && searchMatch) {
+                course.classList.remove('hidden');
+            } else {
+                course.classList.add('hidden');
+            }
+        });
+    }
+
+    function resetCategoryFilter() {
+        categoryItems.forEach(cat => cat.classList.remove('active-category'));
+        filterCourses(null, searchInput.value); 
+    }
+
+    categoryItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const category = item.dataset.category;
+            const isActive = item.classList.contains('active-category');
+
+            categoryItems.forEach(cat => cat.classList.remove('active-category'));
+
+            if (isActive) {
+                filterCourses(null, searchInput.value);
+            } else {
+                item.classList.add('active-category');
+                filterCourses(category, searchInput.value);
+            }
+        });
+    });
+
+    showAllCategoriesButton.addEventListener('click', () => {
+        resetCategoryFilter();
+    });
+
+    searchInput.addEventListener('input', () => {
+        const activeCategoryElement = document.querySelector('.category-item.active-category');
+        const activeCategory = activeCategoryElement ? activeCategoryElement.dataset.category : null;
+        filterCourses(activeCategory, searchInput.value);
+    });
+
+  </script>
+
+ </body>
+</html>

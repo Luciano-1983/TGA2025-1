@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
  <head>
   <meta charset="utf-8"/>
@@ -17,6 +18,10 @@
     .category-item.active-category { background-color: #d8b4fe; /* Lighter purple for active category */ }
     .course-item { display: block; /* Show courses by default */}
     .course-item.hidden { display: none; }
+    .comment-input-section { display: none; } /* Hide comment input by default */
+    .comment-input-section.active { display: block; } /* Show active comment input */
+    .like-button.liked i { font-weight: 900; /* Make heart solid */ color: #dc2626; /* Red color for liked */ }
+    .like-button.liked span { color: #dc2626; }
   </style>
  </head>
  <body class="bg-gray-100">
@@ -91,8 +96,7 @@
    </div>
 
    <!-- Content Area -->
-   <div class="flex-grow overflow-y-auto">
-
+   <div class="flex-grow overflow-y-auto pb-16">
      <!-- Inicio Screen (Active by default) -->
      <div id="screen-inicio" class="screen active-screen">
        <!-- Search Bar -->
@@ -271,17 +275,17 @@
         <p class="text-gray-600">Informações sobre faculdades e cursos.</p>
          <!-- Placeholder content -->
         <div class="mt-6 space-y-4">
-          <div class="bg-gray-100 p-3 rounded-lg flex items-center">
+          <div id="faculdade-faccat" class="bg-gray-100 p-3 rounded-lg flex items-center">
              <i class="fas fa-university text-purple-600 mr-3"></i>
-             <span>Universidade Exemplo A</span>
+             <span>Faccat</span>
           </div>
-          <div class="bg-gray-100 p-3 rounded-lg flex items-center">
+          <div id="faculdade-feevale" class="bg-gray-100 p-3 rounded-lg flex items-center">
              <i class="fas fa-university text-purple-600 mr-3"></i>
-             <span>Instituto Federal B</span>
+             <span>Feevale</span>
           </div>
-           <div class="bg-gray-100 p-3 rounded-lg flex items-center">
+           <div id="faculdade-unisinos" class="bg-gray-100 p-3 rounded-lg flex items-center">
              <i class="fas fa-university text-purple-600 mr-3"></i>
-             <span>Faculdade Técnica C</span>
+             <span>Unisinos</span>
           </div>
         </div>
      </div>
@@ -290,13 +294,13 @@
      <div id="screen-feed" class="screen p-4">
         <h2 class="text-xl font-bold mb-4 text-gray-800">Feed</h2>
         <!-- Create Post Area -->
-        <div class="bg-gray-100 p-4 rounded-lg mb-6">
+        <div class="bg-gray-100 p-4 rounded-lg mb-6 shadow">
             <textarea id="post-textarea" class="w-full p-2 border border-gray-300 rounded-lg mb-2 focus:outline-none focus:ring-2 focus:ring-purple-400" rows="3" placeholder="No que você está pensando?"></textarea>
             <button id="post-button" class="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition duration-200">Postar</button>
         </div>
 
         <!-- Feed Posts Container -->
-        <div id="feed-posts-container" class="space-y-4">
+        <div id="feed-posts-container" class="space-y-6">
             <!-- Placeholder Post 1 -->
             <div class="post-item bg-white p-4 rounded-lg shadow">
                 <div class="flex items-center mb-2">
@@ -304,10 +308,25 @@
                     <span class="font-semibold text-gray-800 post-username">Usuário Exemplo</span>
                     <span class="text-xs text-gray-500 ml-auto post-timestamp">2h atrás</span>
                 </div>
-                <p class="text-gray-700 mb-3 post-content">Acabei de terminar o módulo de Cálculo I! Alguém tem dicas para Derivadas Parciais? 🤔 #matematica #calculo</p>
-                <div class="flex justify-start space-x-4 text-gray-500 text-sm">
-                    <button class="like-button hover:text-purple-600"><i class="far fa-heart mr-1"></i> Curtir</button> 
+                <p class="text-gray-700 mb-3 post-content">Acabei de terminar o módulo de Cálculo I! Alguém tem dicas para Derivadas Parciais? #matematica #calculo</p>
+                <div class="flex justify-start space-x-4 text-gray-500 text-sm mb-3">
+                    <button class="like-button hover:text-purple-600">
+                        <i class="far fa-heart mr-1"></i> <span class="like-text">Curtir</span>
+                    </button>
                     <button class="comment-button hover:text-purple-600"><i class="far fa-comment mr-1"></i> Comentar</button>
+                </div>
+                <!-- Comments Section -->
+                <div class="comments-section mt-3 pt-3 border-t border-gray-200">
+                    <div class="comments-list space-y-2 mb-3">
+                        <!-- Example Comment -->
+                         <div class="comment-item text-sm text-gray-600">
+                            <span class="font-semibold text-gray-800">Aluno Ajuda:</span> Parabéns! Khan Academy tem bons vídeos sobre derivadas parciais.
+                        </div>
+                    </div>
+                    <div class="comment-input-section">
+                        <textarea class="comment-input w-full p-2 border border-gray-300 rounded-lg mb-2 text-sm focus:outline-none focus:ring-1 focus:ring-purple-400" rows="2" placeholder="Adicione um comentário..."></textarea>
+                        <button class="submit-comment-button bg-purple-500 text-white text-xs px-3 py-1 rounded hover:bg-purple-600">Comentar</button>
+                    </div>
                 </div>
             </div>
             <!-- Placeholder Post 2 -->
@@ -318,9 +337,21 @@
                     <span class="text-xs text-gray-500 ml-auto post-timestamp">5h atrás</span>
                 </div>
                 <p class="text-gray-700 mb-3 post-content">Recomendação de livro para Física Quântica? Aquele do Griffiths é bom?</p>
-                <div class="flex justify-start space-x-4 text-gray-500 text-sm">
-                    <button class="like-button hover:text-purple-600"><i class="far fa-heart mr-1"></i> Curtir</button>
+                <div class="flex justify-start space-x-4 text-gray-500 text-sm mb-3">
+                    <button class="like-button hover:text-purple-600">
+                        <i class="far fa-heart mr-1"></i> <span class="like-text">Curtir</span>
+                    </button>
                     <button class="comment-button hover:text-purple-600"><i class="far fa-comment mr-1"></i> Comentar</button>
+                </div>
+                 <!-- Comments Section -->
+                <div class="comments-section mt-3 pt-3 border-t border-gray-200">
+                    <div class="comments-list space-y-2 mb-3">
+                        <!-- Comments will be added here -->
+                    </div>
+                    <div class="comment-input-section">
+                        <textarea class="comment-input w-full p-2 border border-gray-300 rounded-lg mb-2 text-sm focus:outline-none focus:ring-1 focus:ring-purple-400" rows="2" placeholder="Adicione um comentário..."></textarea>
+                        <button class="submit-comment-button bg-purple-500 text-white text-xs px-3 py-1 rounded hover:bg-purple-600">Comentar</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -351,7 +382,7 @@
     </div>
 
    <!-- Navigation -->
-   <div class="bg-purple-600 text-white p-4 flex justify-around mt-auto sticky bottom-0">
+   <div class="bg-purple-600 text-white p-4 flex justify-around mt-auto sticky bottom-0 z-10">
     <div id="nav-inicio" class="nav-item flex flex-col items-center cursor-pointer hover:text-purple-300 active-nav" data-screen="inicio">
      <i class="fas fa-home text-2xl">
      </i>
@@ -367,7 +398,7 @@
      </div>
     </div>
     <div id="nav-feed" class="nav-item flex flex-col items-center cursor-pointer hover:text-purple-300" data-screen="feed">
-     <i class="fas fa-stream text-2xl"></i> 
+     <i class="fas fa-stream text-2xl"></i>
      <div class="text-xs mt-1">
       Feed
      </div>
@@ -396,14 +427,16 @@
     const forgotPasswordScreen = document.getElementById('screen-forgot-password');
     const mainAppContainer = document.getElementById('main-app-container');
     const feedScreen = document.getElementById('screen-feed');
-    const allScreens = [loginScreen, signupScreen, forgotPasswordScreen, mainAppContainer]; 
+    const allScreens = [loginScreen, signupScreen, forgotPasswordScreen, mainAppContainer];
 
     // Login Screen Elements
     const loginEmailInput = document.getElementById('login-email');
     const loginPasswordInput = document.getElementById('login-password');
     const loginButton = document.getElementById('login-button');
-    const signupButton = document.getElementById('signup-button'); 
+    const signupButton = document.getElementById('signup-button');
     const forgotPasswordLink = document.getElementById('forgot-password-link');
+    const backToLoginFromSignup = document.getElementById('back-to-login-from-signup');
+    const backToLoginFromForgot = document.getElementById('back-to-login-from-forgot');
 
     // Signup Screen Elements
     const signupUsernameInput = document.getElementById('signup-username');
@@ -411,12 +444,10 @@
     const signupPasswordInput = document.getElementById('signup-password');
     const signupConfirmPasswordInput = document.getElementById('signup-confirm-password');
     const createAccountButton = document.getElementById('create-account-button');
-    const backToLoginFromSignup = document.getElementById('back-to-login-from-signup');
 
     // Forgot Password Screen Elements
     const forgotEmailInput = document.getElementById('forgot-email');
     const resetPasswordButton = document.getElementById('reset-password-button');
-    const backToLoginFromForgot = document.getElementById('back-to-login-from-forgot');
 
     // Main App Elements
     const logoutButton = document.getElementById('logout-button');
@@ -425,24 +456,26 @@
     const profileUserEmail = document.getElementById('profile-user-email');
     const goToLoginButton = document.getElementById('go-to-login-button');
     const navItems = document.querySelectorAll('.nav-item');
-    const mainAppScreens = document.querySelectorAll('#main-app-container .screen'); 
+    const mainAppScreens = document.querySelectorAll('#main-app-container .screen');
     const categoryItems = document.querySelectorAll('.category-item');
     const courseItems = document.querySelectorAll('#courses-list .course-item');
     const showAllCategoriesButton = document.getElementById('show-all-categories');
     const searchInput = document.getElementById('search-input');
+    const collegeItems = document.querySelectorAll('#screen-faculdades .bg-gray-100.p-3.rounded-lg'); // Select college items
 
+    // Feed Elements
     const postTextarea = document.getElementById('post-textarea');
     const postButton = document.getElementById('post-button');
     const feedPostsContainer = document.getElementById('feed-posts-container');
-    let loggedInUsername = "Convidado"; // Store logged-in username
+    let loggedInUsername = "Convidado";
 
     // --- Screen Management ---
 
     function showScreen(screenToShow) {
         allScreens.forEach(screen => {
             if (screen === screenToShow) {
-                screen.style.display = screen === mainAppContainer ? 'flex' : 'block'; 
-                screen.classList.add('active-screen'); 
+                screen.style.display = screen === mainAppContainer ? 'flex' : 'block';
+                screen.classList.add('active-screen');
             } else {
                 screen.style.display = 'none';
                 screen.classList.remove('active-screen');
@@ -454,9 +487,6 @@
         else if (screenToShow === forgotPasswordScreen) document.title = "Mobile App - Recuperar Senha";
         else if (screenToShow === mainAppContainer) document.title = "Mobile App";
     }
-
-
-    // --- Login/Authentication Logic ---
 
     function showLoginScreen() {
         showScreen(loginScreen);
@@ -470,182 +500,176 @@
         showScreen(forgotPasswordScreen);
     }
 
-    function showMainApp(username = null) {
+    // Modified showMainApp to accept an initial screen
+    function showMainApp(username = null, initialScreen = 'inicio') {
         showScreen(mainAppContainer);
 
         if (username) {
-            loggedInUsername = username; // Update global username
+            loggedInUsername = username;
             userNameDisplay.textContent = username;
             profileUserName.textContent = username;
-            // Use a placeholder or logic to get actual email if available
-            const email = signupEmailInput.value || loginEmailInput.value || `${username.toLowerCase().replace(/\s+/g, '.')}@exemplo.com`;
+            // Attempt to get a somewhat realistic email if signup wasn't used
+            const email = signupEmailInput.value || loginEmailInput.value || (username.includes('@') ? username : `${username.toLowerCase().replace(/\s+/g, '.')}@exemplo.com`);
             profileUserEmail.innerHTML = `<i class="fas fa-envelope mr-2 text-purple-600"></i> ${email}`;
             logoutButton.style.display = 'block';
             goToLoginButton.style.display = 'none';
         } else {
-             loggedInUsername = "Convidado"; // Reset global username
-             userNameDisplay.textContent = "Convidado";
+            loggedInUsername = "Convidado";
+            userNameDisplay.textContent = "Convidado";
             profileUserName.textContent = "Convidado";
             profileUserEmail.innerHTML = `<i class="fas fa-envelope mr-2 text-purple-600"></i> Faça login para ver`;
             logoutButton.style.display = 'none';
             goToLoginButton.style.display = 'block';
-            // ... (reset input fields)
+            // Clear login/signup fields on logout/guest view
+            loginEmailInput.value = '';
+            loginPasswordInput.value = '';
+            signupUsernameInput.value = '';
+            signupEmailInput.value = '';
+            signupPasswordInput.value = '';
+            signupConfirmPasswordInput.value = '';
+            forgotEmailInput.value = '';
         }
 
-        // Reset to 'Inicio' tab only if logging in or if no screen is active
-        // Prevent resetting tab when navigating within the app while logged in
-        if (!mainAppContainer.querySelector('.screen.active-screen') || username) {
-            setActiveScreen('inicio');
-            setActiveNav('inicio');
-        }
+        // Set the active screen and nav based on the initialScreen parameter
+        setActiveScreen(initialScreen);
+        setActiveNav(initialScreen);
     }
 
-    loginButton.addEventListener('click', () => {
-        // ... (existing login logic)
-        const emailOrUser = loginEmailInput.value;
-        const password = loginPasswordInput.value;
-        // Determine username - prioritize signup input if it has value, else login input, else default
-        let username = signupUsernameInput.value || (emailOrUser && !emailOrUser.includes('@') ? emailOrUser : "Dani Martinez");
+    // --- Authentication Listeners ---
 
-        if (emailOrUser && password) {
-             console.log(`Attempting login for: ${emailOrUser}`);
-             showMainApp(username);
-        } else {
+    loginButton.addEventListener('click', () => {
+        const emailOrUser = loginEmailInput.value.trim();
+        const password = loginPasswordInput.value.trim();
+        if (!emailOrUser || !password) {
             alert("Por favor, preencha o email/usuário e a senha.");
+            return;
         }
+
+        console.log(`Attempting login for: ${emailOrUser}`);
+        let username = emailOrUser.includes('@') ? "Usuário Exemplo" : emailOrUser;
+        // If signup fields have values, prioritize username from there (simple simulation)
+        if (signupUsernameInput.value && !emailOrUser.includes('@')) {
+             username = signupUsernameInput.value;
+        } else if (signupUsernameInput.value && emailOrUser.includes('@') && signupEmailInput.value === emailOrUser) {
+             username = signupUsernameInput.value;
+        }
+
+
+        // Redirect to Faculdades screen after login
+        showMainApp(username, 'faculdades');
     });
 
-    // ... (other auth listeners)
+    signupButton.addEventListener('click', showSignUpScreen);
+    forgotPasswordLink.addEventListener('click', showForgotPasswordScreen);
+    backToLoginFromSignup.addEventListener('click', showLoginScreen);
+    backToLoginFromForgot.addEventListener('click', showLoginScreen);
 
-    logoutButton.addEventListener('click', () => {
-        console.log("Logging out");
-        showMainApp(); // Reset to guest state which shows login screen
+    createAccountButton.addEventListener('click', () => {
+        const username = signupUsernameInput.value.trim();
+        const email = signupEmailInput.value.trim();
+        const password = signupPasswordInput.value.trim();
+        const confirmPassword = signupConfirmPasswordInput.value.trim();
+
+        if (!username || !email || !password || !confirmPassword) {
+            alert("Por favor, preencha todos os campos.");
+            return;
+        }
+        if (password !== confirmPassword) {
+            alert("As senhas não coincidem.");
+            return;
+        }
+
+        console.log(`Creating account for: ${username} (${email})`);
+        // Redirect to Faculdades screen after signup
+        showMainApp(username, 'faculdades');
+    });
+
+    resetPasswordButton.addEventListener('click', () => {
+        const email = forgotEmailInput.value.trim();
+        if (!email || !email.includes('@')) {
+            alert("Por favor, insira um email válido.");
+            return;
+        }
+        console.log(`Password reset link requested for: ${email}`);
+        alert(`Se o email ${email} estiver cadastrado, um link de recuperação será enviado.`);
         showLoginScreen();
     });
 
-
-    // ... (existing navigation logic)
-
-    // --- Feed Functionality ---
-
-    // Function to create a new post element
-    function createPostElement(username, content) {
-        const postDiv = document.createElement('div');
-        postDiv.className = 'post-item bg-white p-4 rounded-lg shadow';
-        postDiv.innerHTML = `
-            <div class="flex items-center mb-2">
-                 <svg class="w-8 h-8 rounded-full mr-3 bg-gray-300 text-gray-600 p-1 post-avatar" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-                 <span class="font-semibold text-gray-800 post-username">${username}</span>
-                 <span class="text-xs text-gray-500 ml-auto post-timestamp">Agora</span>
-             </div>
-             <p class="text-gray-700 mb-3 post-content">${content}</p>
-             <div class="flex justify-start space-x-4 text-gray-500 text-sm">
-                 <button class="like-button hover:text-purple-600"><i class="far fa-heart mr-1"></i> Curtir</button>
-                 <button class="comment-button hover:text-purple-600"><i class="far fa-comment mr-1"></i> Comentar</button>
-             </div>
-        `;
-        return postDiv;
-    }
-
-    // Event listener for the post button
-    postButton.addEventListener('click', () => {
-        const postContent = postTextarea.value.trim();
-        if (postContent) {
-            const newPost = createPostElement(loggedInUsername, postContent);
-            feedPostsContainer.prepend(newPost); // Add to the top of the feed
-            postTextarea.value = ''; // Clear the textarea
-            console.log(`New post added by ${loggedInUsername}: "${postContent}"`);
-        } else {
-            alert('Por favor, escreva algo para postar.');
-        }
+    logoutButton.addEventListener('click', () => {
+        console.log("Logging out");
+        showLoginScreen(); // Go back to login screen on logout
+        // Reset user-specific data in the main app when logging out
+        showMainApp(null); // Reset display to Guest state
+        setActiveScreen('inicio'); // Optionally reset view to inicio, though user is logged out
+        setActiveNav('inicio');
+        showLoginScreen(); // Ensure login is the visible screen
     });
 
-    // Event delegation for like and comment buttons
-    feedPostsContainer.addEventListener('click', (event) => {
-        const target = event.target;
-        const likeButton = target.closest('.like-button');
-        const commentButton = target.closest('.comment-button');
+    goToLoginButton.addEventListener('click', showLoginScreen);
 
-        if (likeButton) {
-            const icon = likeButton.querySelector('i');
-            const isLiked = icon.classList.contains('fas'); // Check if already solid (liked)
-
-            if (isLiked) {
-                icon.classList.remove('fas', 'text-purple-600');
-                icon.classList.add('far'); // Back to outline
-                likeButton.childNodes[1].textContent = ' Curtir'; // Reset text
-                console.log("Post unliked");
-            } else {
-                icon.classList.remove('far');
-                icon.classList.add('fas', 'text-purple-600'); // Solid icon and purple color
-                likeButton.childNodes[1].textContent = ' Curtido'; // Change text
-                console.log("Post liked");
-            }
-        } else if (commentButton) {
-            // In a real app, this would open a comment input/modal
-            console.log("Comment button clicked - Placeholder action");
-            alert('Funcionalidade de comentário ainda não implementada.');
-        }
-    });
-
-
-    // ... (existing category/course filtering)
-
-
-    // Initial setup
-    showMainApp(); // Start in guest mode / potentially logged-out state
-
-    // Check if user might be 'logged in' from previous state (simple check)
-    if (userNameDisplay.textContent !== "Convidado") {
-        showMainApp(userNameDisplay.textContent);
-    } else {
-        showLoginScreen(); // Explicitly show login if not 'logged in'
-    }
-
-    // Ensure 'Inicio' is active if main app is shown initially
-    if(mainAppContainer.style.display !== 'none') {
-       setActiveNav('inicio');
-       setActiveScreen('inicio');
-    } else {
-        // Hide all main app screens if login is shown
-        mainAppScreens.forEach(screen => screen.classList.remove('active-screen'));
-    }
+    // --- Navigation ---
 
     function setActiveScreen(screenName) {
-         const targetScreenId = `screen-${screenName}`;
-         mainAppScreens.forEach(screen => { 
+        const targetScreenId = `screen-${screenName}`;
+        mainAppScreens.forEach(screen => {
             if (screen.id === targetScreenId) {
-                 screen.classList.add('active-screen');
-             } else {
-                 screen.classList.remove('active-screen');
-             }
+                screen.classList.add('active-screen');
+            } else {
+                screen.classList.remove('active-screen');
+            }
         });
-     }
+    }
 
-      function setActiveNav(screenName) {
-          navItems.forEach(nav => {
-             if (nav.dataset.screen === screenName) {
-                 nav.classList.add('active-nav');
-             } else {
-                 nav.classList.remove('active-nav');
-             }
-         });
-      }
+    function setActiveNav(screenName) {
+        navItems.forEach(nav => {
+            if (nav.dataset.screen === screenName) {
+                nav.classList.add('active-nav');
+            } else {
+                nav.classList.remove('active-nav');
+            }
+        });
+    }
 
     navItems.forEach(item => {
-      item.addEventListener('click', () => {
-        const targetScreen = item.dataset.screen;
+        item.addEventListener('click', () => {
+            const targetScreen = item.dataset.screen;
 
-        setActiveNav(targetScreen);
-        setActiveScreen(targetScreen);
+            // Prevent navigating away from faculdades if no college is selected?
+            // For now, allow normal navigation. User can return to faculdades via nav.
 
-        if (targetScreen === 'inicio') {
+            setActiveNav(targetScreen);
+            setActiveScreen(targetScreen);
+
+            // Reset filters only when navigating TO inicio
+            if (targetScreen === 'inicio') {
+                resetCategoryFilter();
+                searchInput.value = '';
+                filterCourses(null, '');
+            }
+        });
+    });
+
+    // --- College Selection ---
+    collegeItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const collegeName = item.querySelector('span').textContent;
+            console.log(`Selected college: ${collegeName}`);
+            // Mark selected (optional visual feedback)
+             collegeItems.forEach(ci => ci.classList.remove('bg-purple-200', 'ring-2', 'ring-purple-500'));
+             item.classList.add('bg-purple-200', 'ring-2', 'ring-purple-500'); // Example styling
+
+            // Navigate to Inicio screen
+            setActiveScreen('inicio');
+            setActiveNav('inicio');
+            // Reset course filters when landing on inicio after college selection
             resetCategoryFilter();
             searchInput.value = '';
-            filterCourses(null, ''); 
-        }
-      });
+            filterCourses(null, '');
+        });
     });
+
+
+    // --- Course Filtering ---
 
     function filterCourses(selectedCategory = null, searchTerm = '') {
         const searchLower = searchTerm.toLowerCase().trim();
@@ -667,7 +691,6 @@
 
     function resetCategoryFilter() {
         categoryItems.forEach(cat => cat.classList.remove('active-category'));
-        filterCourses(null, searchInput.value); 
     }
 
     categoryItems.forEach(item => {
@@ -688,6 +711,7 @@
 
     showAllCategoriesButton.addEventListener('click', () => {
         resetCategoryFilter();
+        filterCourses(null, searchInput.value);
     });
 
     searchInput.addEventListener('input', () => {
@@ -696,6 +720,113 @@
         filterCourses(activeCategory, searchInput.value);
     });
 
+    // --- Feed Functionality ---
+
+    postButton.addEventListener('click', () => {
+        const postContent = postTextarea.value.trim();
+        if (!postContent) return;
+
+        const now = new Date();
+        const timestamp = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+        const newPost = document.createElement('div');
+        newPost.classList.add('post-item', 'bg-white', 'p-4', 'rounded-lg', 'shadow');
+        newPost.innerHTML = `
+            <div class="flex items-center mb-2">
+                 <svg class="w-8 h-8 rounded-full mr-3 bg-gray-300 text-gray-600 p-1 post-avatar" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                <span class="font-semibold text-gray-800 post-username">${loggedInUsername}</span>
+                <span class="text-xs text-gray-500 ml-auto post-timestamp">${timestamp}</span>
+            </div>
+            <p class="text-gray-700 mb-3 post-content">${postContent.replace(/\n/g, '<br>')}</p>
+            <div class="flex justify-start space-x-4 text-gray-500 text-sm mb-3">
+                 <button class="like-button hover:text-purple-600">
+                    <i class="far fa-heart mr-1"></i> <span class="like-text">Curtir</span>
+                 </button>
+                 <button class="comment-button hover:text-purple-600"><i class="far fa-comment mr-1"></i> Comentar</button>
+            </div>
+            <div class="comments-section mt-3 pt-3 border-t border-gray-200">
+                <div class="comments-list space-y-2 mb-3">
+                    <!-- New comments will be added here -->
+                </div>
+                <div class="comment-input-section">
+                    <textarea class="comment-input w-full p-2 border border-gray-300 rounded-lg mb-2 text-sm focus:outline-none focus:ring-1 focus:ring-purple-400" rows="2" placeholder="Adicione um comentário..."></textarea>
+                    <button class="submit-comment-button bg-purple-500 text-white text-xs px-3 py-1 rounded hover:bg-purple-600">Comentar</button>
+                </div>
+            </div>
+        `;
+
+        feedPostsContainer.insertBefore(newPost, feedPostsContainer.firstChild);
+
+        postTextarea.value = '';
+
+        attachFeedEventListeners(newPost);
+    });
+
+    function attachFeedEventListeners(postElement) {
+        const likeButton = postElement.querySelector('.like-button');
+        const commentButton = postElement.querySelector('.comment-button');
+        const submitCommentButton = postElement.querySelector('.submit-comment-button');
+        const commentInputSection = postElement.querySelector('.comment-input-section');
+        const commentInput = postElement.querySelector('.comment-input');
+        const commentsList = postElement.querySelector('.comments-list');
+
+        likeButton.addEventListener('click', () => {
+            const icon = likeButton.querySelector('i');
+            const text = likeButton.querySelector('.like-text');
+            likeButton.classList.toggle('liked');
+            if (likeButton.classList.contains('liked')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                text.textContent = 'Descurtir';
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                text.textContent = 'Curtir';
+            }
+        });
+
+        commentButton.addEventListener('click', () => {
+            commentInputSection.classList.toggle('active');
+            if (commentInputSection.classList.contains('active')) {
+                commentInput.focus();
+            }
+        });
+
+        submitCommentButton.addEventListener('click', () => {
+            const commentText = commentInput.value.trim();
+            if (!commentText) return;
+
+            const newComment = document.createElement('div');
+            newComment.classList.add('comment-item', 'text-sm', 'text-gray-600');
+            newComment.innerHTML = `<span class="font-semibold text-gray-800">${loggedInUsername}:</span> ${commentText.replace(/\n/g, '<br>')}`;
+
+            commentsList.appendChild(newComment);
+
+            commentInput.value = '';
+            commentInputSection.classList.remove('active');
+        });
+    }
+
+    document.querySelectorAll('.post-item').forEach(post => {
+        attachFeedEventListeners(post);
+    });
+
+    // --- Initial Setup ---
+    // Always start at the login screen on page load
+     showLoginScreen();
+     // Make sure main app screens are initially hidden if login is shown first
+     mainAppScreens.forEach(screen => screen.classList.remove('active-screen'));
+
+
+    /* // Previous initial setup logic - replaced by always showing login first
+    if (userNameDisplay.textContent !== "Convidado" && userNameDisplay.textContent !== '') {
+        // This case shouldn't happen anymore with the new flow starting at login
+        showMainApp(userNameDisplay.textContent); // Defaults to 'inicio'
+    } else {
+        showLoginScreen();
+        mainAppScreens.forEach(screen => screen.classList.remove('active-screen'));
+    }
+    */
   </script>
 
  </body>
